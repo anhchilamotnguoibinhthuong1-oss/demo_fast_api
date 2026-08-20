@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
@@ -6,6 +6,7 @@ from app.dependencies.auth import get_current_user
 from app.dependencies.permission import require_admin
 from app.models.user import User
 from app.schemas.user import UserResponse
+from app.services.user_service import UserService
 
 
 router = APIRouter(
@@ -49,7 +50,7 @@ def list_users(
     Chỉ ADMIN được xem danh sách tất cả user.
     """
 
-    users = db.query(User).all()
+    users = UserService.list_all_users(db)
 
     return users
 
@@ -67,16 +68,6 @@ def get_user(
     Chỉ ADMIN được xem thông tin user khác.
     """
 
-    user = (
-        db.query(User)
-        .filter(User.id == user_id)
-        .first()
-    )
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
+    user = UserService.get_user_by_id(db, user_id)
 
     return user
