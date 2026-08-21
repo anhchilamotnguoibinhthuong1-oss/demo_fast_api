@@ -32,14 +32,3 @@ def login(payload: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
     """
     user = AuthService.authenticate_user(db, payload.username, payload.password)
     return AuthService.create_tokens(user)
-
-
-@router.post("/refresh", response_model=Token)
-def refresh_token_endpoint(payload: Dict[str, str], db: Session = Depends(get_db)):
-    """
-    Cập nhật access token bằng refresh token
-    - Xác thực refresh token
-    - Cấp access token mới
-    """
-    refresh_token = payload.get("refresh_token")
-    return AuthService.refresh_access_token(db, refresh_token)
