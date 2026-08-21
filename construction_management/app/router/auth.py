@@ -63,30 +63,3 @@ def login(
 
     # Tạo token cho user
     return AuthService.create_tokens(user)
-
-
-# API lấy access token mới
-# @router.post(
-#     "/refresh",
-#     response_model=Token,
-# )
-# def refresh_token_endpoint(
-#     # Nhận refresh token từ request body
-#     payload: Dict[str, str],
-#     # Kết nối database
-#     db: Session = Depends(get_db),
-# ):
-#     """
-#     Cấp access token mới bằng refresh token:
-#     - Kiểm tra refresh token
-#     - Tạo access token mới
-#     """
-
-#     # Lấy refresh token từ request
-#     refresh_token = payload.get("refresh_token")
-
-#     # Gọi service để tạo access token mới
-#     return AuthService.refresh_access_token(
-#         db,
-#         refresh_token,
-#     )
